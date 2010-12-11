@@ -23,6 +23,7 @@ class GameMain:
         self.screen = pygame.display.set_mode((self.width, self.height))
     def MainLoop(self):
         """This is the Main Loop of the Game"""
+        self.load_sprites()
         while 1:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -32,8 +33,19 @@ class GameMain:
                     or (event.key == K_LEFT)
                     or (event.key == K_UP)
                     or (event.key == K_DOWN)):
-                        Bear.move(event.key)
+                        self.bear.move(event.key)
+            self.background = pygame.Surface(self.screen.get_size())
+            self.background = self.background.convert()
+            self.background.fill((250, 250, 250))
+            self.screen.blit(self.background, (0, 0))
+            self.bear_sprites.draw(self.screen)
+            pygame.display.flip()
+    def load_sprites(self):
+        self.bear = Bear()
+        self.bear_sprites = pygame.sprite.RenderPlain((self.bear))
     
+
+
 class Bear(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -42,12 +54,13 @@ class Bear(pygame.sprite.Sprite):
         self.x_dist = 15
         self.y_dist = 15
         #ME GO TOO FAR!
-        self.position = position
+        #self.position = position
         self.speed = self.direction = 0 
-        self.k_left = self.k_right = self.k_down = self.k_up = 0
+        # self.k_left = self.k_right = self.k_down = self.k_up = 0
     def move(self, key):
-        xMove = 0;
-        yMove = 0;
+        xMove = 0
+        yMove = 0
+        
         if (key == K_RIGHT):
             xMove = self.x_dist
         elif (key == K_LEFT):
@@ -56,7 +69,8 @@ class Bear(pygame.sprite.Sprite):
             yMove = -self.y_dist
         elif (key == K_DOWN):
             yMove = self.y_dist
-        self.rect.move_ip(xMove,yMove);
+        self.rect.move_ip(xMove,yMove)
+
 
 if __name__ == "__main__":
     MainWindow = GameMain()
