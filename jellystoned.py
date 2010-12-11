@@ -42,12 +42,13 @@ class GameMain:
             self.background.fill((85,98,112))
             self.screen.blit(self.background, (0, 0))
             self.bear_sprites.draw(self.screen)
+            self.cop_sprites.draw(self.screen)
             pygame.display.flip()
     def load_sprites(self):
         self.bear = Bear()
         self.bear_sprites = pygame.sprite.RenderPlain(self.bear)
-        # self.cop = Cop()
-        # self.cop_sprites = pygame.sprite.RenderPlain(self.cop)
+        self.cop = Cop()
+        self.cop_sprites = pygame.sprite.RenderPlain(self.cop)
     def load_music(self):
         pygame.mixer.music.load(os.path.join('data', 'music', '05 - What would Freud say.ogg'))
         pygame.mixer.music.play()
@@ -56,8 +57,10 @@ class GameMain:
 class Cop(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.animated = load_sliced_sprites(135, 174, 'cop_array.png')
-        # self.image, self.rect = self.animated
+        #self.animated = load_sliced_sprites(135, 174, 'cop_array.png')
+        self.running = 0
+        self.image, self.rect = load_image('cop_0.png',-1)
+
 
 class Bear(pygame.sprite.Sprite):
     def __init__(self):
