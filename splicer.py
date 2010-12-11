@@ -13,7 +13,7 @@ def load_sliced_sprites(w, h, filename):
     	Master width must be len(frames)*frame.width
     '''
     images = []
-    master_image = load_image(filename, -1)
+    master_image = pygame.image.load(os.path.join('data/images', filename)).convert_alpha()
 
     master_width, master_height = master_image.get_size()
     for i in xrange(int(master_width/w)):
