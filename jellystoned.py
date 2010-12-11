@@ -9,7 +9,6 @@ if not pygame.font: print 'Warning, fonts disabled'
 if not pygame.mixer: print 'Warning, sound disabled'
 
 from helpers import *
-from splicer import *
 #boilerplate pygame used lovingly from http://www.learningpython.com/2006/03/12/creating-a-game-in-python-using-pygame-part-one/
 class GameMain:
     """The Main AWNM Class - This class handles the main initialization and creating of the Game.""" 
