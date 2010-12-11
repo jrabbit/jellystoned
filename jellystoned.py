@@ -43,7 +43,6 @@ class GameMain:
             self.screen.blit(self.background, (0, 0))
             self.bear_sprites.draw(self.screen)
             pygame.display.flip()
-            pygame.mixer.music.play()
     def load_sprites(self):
         self.bear = Bear()
         self.bear_sprites = pygame.sprite.RenderPlain(self.bear)
@@ -51,6 +50,7 @@ class GameMain:
         # self.cop_sprites = pygame.sprite.RenderPlain(self.cop)
     def load_music(self):
         pygame.mixer.music.load(os.path.join('data', 'music', '05 - What would Freud say.ogg'))
+        pygame.mixer.music.play()
     
 
 class Cop(pygame.sprite.Sprite):
