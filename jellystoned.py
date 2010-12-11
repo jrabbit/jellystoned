@@ -9,6 +9,7 @@ if not pygame.font: print 'Warning, fonts disabled'
 if not pygame.mixer: print 'Warning, sound disabled'
 
 from helpers import *
+from splicer import *
 #boilerplate pygame used lovingly from http://www.learningpython.com/2006/03/12/creating-a-game-in-python-using-pygame-part-one/
 class GameMain:
     """The Main AWNM Class - This class handles the main initialization and creating of the Game.""" 
@@ -20,6 +21,7 @@ class GameMain:
         self.width = width
         self.height = height
         """Create the Screen"""
+        pygame.display.set_caption("Jelleystoned! By Jrabbit!", "jellystoned")
         self.screen = pygame.display.set_mode((self.width, self.height))
     def MainLoop(self):
         """This is the Main Loop of the Game"""
@@ -36,7 +38,7 @@ class GameMain:
                         self.bear.move(event.key)
             self.background = pygame.Surface(self.screen.get_size())
             self.background = self.background.convert()
-            self.background.fill((250, 250, 250))
+            self.background.fill((85,98,112))
             self.screen.blit(self.background, (0, 0))
             self.bear_sprites.draw(self.screen)
             pygame.display.flip()
@@ -45,6 +47,11 @@ class GameMain:
         self.bear_sprites = pygame.sprite.RenderPlain((self.bear))
     
 
+class Pig(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image, self.rect = load_image('cop_array.png',-1)
+        width, height = self.image.get_size()
 
 class Bear(pygame.sprite.Sprite):
     def __init__(self):
