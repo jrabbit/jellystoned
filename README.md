@@ -1,5 +1,6 @@
 Jellystoned
 ===========
+[screenshot](http://i.min.us/idf6M4.PNG "I'm telling tim")
 A game by Jrabbit.
 -------------------
 Written for the 4th Reddit Game Jam.
