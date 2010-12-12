@@ -28,6 +28,7 @@ class GameMain:
         """This is the Main Loop of the Game"""
         self.load_sprites()
         self.load_music()
+        self.showing_credits = 0
         while 1:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -38,6 +39,16 @@ class GameMain:
                     or (event.key == K_UP)
                     or (event.key == K_DOWN)):
                         self.bear.move(event.key)
+            if pygame.key.get_pressed()[K_q]:
+                print 'you pressed q'
+                if self.showing_credits:
+                    pygame.time.wait(1000)
+                    sys.exit()
+                else:
+                    self.show_credits()
+            if POINTS > 20:
+                if not self.showing_credits:
+                    self.show_credits()
             self.background = pygame.Surface(self.screen.get_size())
             self.background = self.background.convert()
             self.background.fill((85,98,112))
@@ -47,10 +58,13 @@ class GameMain:
             self.score_sprites.draw(self.screen)
             self.cop_sprites.update(pygame.time.get_ticks())
             self.lstCols = pygame.sprite.spritecollide(self.bear, self.cop_sprites, False)
+            if self.showing_credits:
+                self.credits_sprites.draw(self.screen)
             if self.lstCols:
                 self.collision()
                 # print self.lstCols
             pygame.display.flip()
+    
     def load_sprites(self):
         self.bear = Bear()
         self.bear_sprites = pygame.sprite.RenderPlain(self.bear)
@@ -77,7 +91,16 @@ class GameMain:
         self.cop_sprites = pygame.sprite.RenderPlain(self.cop)
         self.bear = Bear()
         self.bear_sprites = pygame.sprite.RenderPlain(self.bear)
+        
+    def show_credits(self):
+        self.credits = Credits()
+        self.credits_sprites = pygame.sprite.RenderPlain(self.credits)
+        self.showing_credits = 1
 
+class Credits(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image, self.rect = load_image('closing.png', -1)
 
 class Score(pygame.sprite.Sprite):
     def __init__(self):
