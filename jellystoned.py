@@ -12,7 +12,6 @@ if not pygame.mixer: print 'Warning, sound disabled'
 from helpers import *
 #boilerplate pygame used lovingly from http://www.learningpython.com/2006/03/12/creating-a-game-in-python-using-pygame-part-one/
 class GameMain:
-    """The Main AWNM Class - This class handles the main initialization and creating of the Game.""" 
     def __init__(self, width=640,height=480):
         """Initialize"""
         """Initialize PyGame"""
@@ -44,6 +43,9 @@ class GameMain:
             self.bear_sprites.draw(self.screen)
             self.cop_sprites.draw(self.screen)
             self.cop_sprites.update(pygame.time.get_ticks())
+            self.lstCols = pygame.sprite.spritecollide(self.bear, self.cop_sprites, False)
+            if self.lstCols:
+                print self.lstCols
             pygame.display.flip()
     def load_sprites(self):
         self.bear = Bear()
@@ -60,7 +62,7 @@ class Cop(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.fps = 10
         self.image, self.rect = load_image('cop_0.png',-1)
-        self.position = (500, random.randint(0,400))
+        self.position = (500, random.randint(0,350))
         self.rect.move_ip(self.position)
         self.start = pygame.time.get_ticks()
         self.delay = 1000
@@ -75,9 +77,6 @@ class Cop(pygame.sprite.Sprite):
             self.image , self.rect = load_image('cop_%d.png' % self.run_seq,-1)
             self.move = (self.position[0] + self.XMove, self.position[1] + self.YMove)
             self.position = self.move
-            print self.position
-            print self.last_update
-            print t
             self.last_update = t
             self.rect.move_ip(self.move)
         if self.run_seq >= 9:
