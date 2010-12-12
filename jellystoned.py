@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # 2010. Jrabbit. GPL v3 or later.
-#Support only offered for Lolcat linux
+#Support only offered for Haiku OS
 import os, sys
 import pygame
 import random
@@ -23,7 +23,6 @@ class GameMain:
         """Create the Screen"""
         pygame.display.set_caption("Jelleystoned! By Jrabbit!", "jellystoned")
         self.screen = pygame.display.set_mode((self.width, self.height))
-        self.cop_sprites.draw(self.screen)
     def MainLoop(self):
         """This is the Main Loop of the Game"""
         self.load_sprites()
@@ -43,7 +42,7 @@ class GameMain:
             self.background.fill((85,98,112))
             self.screen.blit(self.background, (0, 0))
             self.bear_sprites.draw(self.screen)
-            #
+            self.cop_sprites.draw(self.screen)
             self.cop_sprites.update(pygame.time.get_ticks())
             pygame.display.flip()
     def load_sprites(self):
@@ -81,7 +80,7 @@ class Cop(pygame.sprite.Sprite):
             print t
             self.last_update = t
             self.rect.move_ip(self.move)
-        if self.run_seq >= 17:
+        if self.run_seq >= 9:
             # loop the animation
             self.run_seq = 0
 
