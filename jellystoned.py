@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # 2010. Jrabbit. GPL v3 or later.
 #Support only offered for Haiku OS
+# Backstory: http://www.vancouversun.com/technology/more+black+bears+found+guarding+farm/3414755/story.html
 import os, sys
 import pygame
 import random
@@ -51,7 +52,18 @@ class GameMain:
                     self.show_credits()
             self.background = pygame.Surface(self.screen.get_size())
             self.background = self.background.convert()
-            self.background.fill((85,98,112))
+            if POINTS < 3:
+                self.bkg_color = (85,98,112)
+            elif POINTS > 3:
+                self.bkg_color = (199,244,100)
+            elif POINTS > 5:
+                self.bkg_color = (196,77,88)
+            elif POINTS > 10:
+                self.bkg_color = (78,205,196)
+            elif POINTS > 15:
+                self.bkg_color = (255,107,107)
+            #color scheme from http://www.colourlovers.com/palette/1930/cheer_up_emo_kid
+            self.background.fill(self.bkg_color)
             self.screen.blit(self.background, (0, 0))
             self.bear_sprites.draw(self.screen)
             self.cop_sprites.draw(self.screen)
@@ -118,6 +130,7 @@ class Score(pygame.sprite.Sprite):
                 self.image = self.font.render(msg, 1, self.color)
 
 class Cop(pygame.sprite.Sprite):
+    """Thanks http://forums.tigsource.com/index.php?topic=9437.0"""
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.fps = 10
@@ -148,6 +161,7 @@ class Cop(pygame.sprite.Sprite):
 
 
 class Bear(pygame.sprite.Sprite):
+    """Thanks http://opengameart.org/content/wesnoth-frankenpack"""
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         # self.src_image = pygame.image.load(image)
