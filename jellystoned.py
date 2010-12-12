@@ -105,7 +105,10 @@ class Cop(pygame.sprite.Sprite):
     def update(self, t):
         """badies should mofe from right to left."""
         if t - self.last_update > self.delay:
-            self.XMove = random.randint(-40,-10)
+            if POINTS < 10:
+                self.XMove = random.randint(-40,-10)
+            else:
+                self.XMove = random.randint(-60,-30)
             self.YMove = 0
             self.run_seq += 1
             self.image , self.rect = load_image('cop_%d.png' % self.run_seq,-1)
