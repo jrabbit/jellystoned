@@ -3,6 +3,7 @@
 #Support only offered for Lolcat linux
 import os, sys
 import pygame
+import random
 from pygame.locals import *
 
 if not pygame.font: print 'Warning, fonts disabled'
@@ -22,6 +23,7 @@ class GameMain:
         """Create the Screen"""
         pygame.display.set_caption("Jelleystoned! By Jrabbit!", "jellystoned")
         self.screen = pygame.display.set_mode((self.width, self.height))
+        self.cop_sprites.draw(self.screen)
     def MainLoop(self):
         """This is the Main Loop of the Game"""
         self.load_sprites()
@@ -41,7 +43,8 @@ class GameMain:
             self.background.fill((85,98,112))
             self.screen.blit(self.background, (0, 0))
             self.bear_sprites.draw(self.screen)
-            self.cop_sprites.draw(self.screen)
+            #
+            self.cop_sprites.update(pygame.time.get_ticks())
             pygame.display.flip()
     def load_sprites(self):
         self.bear = Bear()
@@ -56,9 +59,31 @@ class GameMain:
 class Cop(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        #self.animated = load_sliced_sprites(135, 174, 'cop_array.png')
-        self.running = 0
+        self.fps = 10
         self.image, self.rect = load_image('cop_0.png',-1)
+        self.position = (500, random.randint(0,400))
+        self.rect.move_ip(self.position)
+        self.start = pygame.time.get_ticks()
+        self.delay = 1000
+        self.run_seq = 0
+        self.last_update = 0
+    def update(self, t):
+        """badies should mofe from right to left."""
+        if t - self.last_update > self.delay:
+            self.XMove = random.randint(-40,-10)
+            self.YMove = 0
+            self.run_seq += 1
+            self.image , self.rect = load_image('cop_%d.png' % self.run_seq,-1)
+            self.move = (self.position[0] + self.XMove, self.position[1] + self.YMove)
+            self.position = self.move
+            print self.position
+            print self.last_update
+            print t
+            self.last_update = t
+            self.rect.move_ip(self.move)
+        if self.run_seq >= 17:
+            # loop the animation
+            self.run_seq = 0
 
 
 class Bear(pygame.sprite.Sprite):
