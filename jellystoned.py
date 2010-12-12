@@ -11,6 +11,8 @@ if not pygame.mixer: print 'Warning, sound disabled'
 
 from helpers import *
 #boilerplate pygame used lovingly from http://www.learningpython.com/2006/03/12/creating-a-game-in-python-using-pygame-part-one/
+POINTS = 0
+
 class GameMain:
     def __init__(self, width=640,height=480):
         """Initialize"""
@@ -42,9 +44,11 @@ class GameMain:
             self.screen.blit(self.background, (0, 0))
             self.bear_sprites.draw(self.screen)
             self.cop_sprites.draw(self.screen)
+            self.score_sprites.draw(self.screen)
             self.cop_sprites.update(pygame.time.get_ticks())
             self.lstCols = pygame.sprite.spritecollide(self.bear, self.cop_sprites, False)
             if self.lstCols:
+                self.collision()
                 print self.lstCols
             pygame.display.flip()
     def load_sprites(self):
@@ -52,10 +56,40 @@ class GameMain:
         self.bear_sprites = pygame.sprite.RenderPlain(self.bear)
         self.cop = Cop()
         self.cop_sprites = pygame.sprite.RenderPlain(self.cop)
+        self.scoreboard = Score()
+        self.score_sprites = pygame.sprite.RenderPlain(self.scoreboard)
+        
     def load_music(self):
         pygame.mixer.music.load(os.path.join('data', 'music', '05 - What would Freud say.ogg'))
         pygame.mixer.music.play()
-    
+        
+    def collision(self):
+        global POINTS
+        wilhelm = pygame.mixer.Sound(os.path.join('data', 'music', 'wscream1.ogg'))
+        pygame.mixer.Sound.play(wilhelm)
+        POINTS += 1
+        self.score_sprites.update() #draw score to screen
+        #kill the cop and respawn
+        self.cop_sprites.remove(self.cop)
+        #respawn
+        self.cop = Cop()
+        self.cop_sprites = pygame.sprite.RenderPlain(self.cop)
+
+
+class Score(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.ubuntu_font = os.path.join('data', 'ubuntu-font', 'Ubuntu-R.ttf')
+        self.font = pygame.font.Font(self.ubuntu_font, 20)
+        self.color = Color('white')
+        self.lastscore = -1
+        self.update()
+        self.rect = self.image.get_rect().move(10, 450)
+    def update(self):
+         if POINTS != self.lastscore:
+                self.lastscore = POINTS
+                msg = "Score: %d" % POINTS
+                self.image = self.font.render(msg, 1, self.color)
 
 class Cop(pygame.sprite.Sprite):
     def __init__(self):
