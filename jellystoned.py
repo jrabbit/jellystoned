@@ -49,7 +49,7 @@ class GameMain:
             self.lstCols = pygame.sprite.spritecollide(self.bear, self.cop_sprites, False)
             if self.lstCols:
                 self.collision()
-                print self.lstCols
+                # print self.lstCols
             pygame.display.flip()
     def load_sprites(self):
         self.bear = Bear()
@@ -71,9 +71,12 @@ class GameMain:
         self.score_sprites.update() #draw score to screen
         #kill the cop and respawn
         self.cop_sprites.remove(self.cop)
+        self.bear_sprites.remove(self.bear)
         #respawn
         self.cop = Cop()
         self.cop_sprites = pygame.sprite.RenderPlain(self.cop)
+        self.bear = Bear()
+        self.bear_sprites = pygame.sprite.RenderPlain(self.bear)
 
 
 class Score(pygame.sprite.Sprite):
@@ -131,6 +134,7 @@ class Bear(pygame.sprite.Sprite):
         #ME GO TOO FAR!
         #self.position = position
         self.speed = self.direction = 0 
+        self.rect.move_ip(0, 200)
         # self.k_left = self.k_right = self.k_down = self.k_up = 0
     def move(self, key):
         xMove = 0
